@@ -1,9 +1,11 @@
 
 #!/usr/bin/env python
 #from setuptools import setup
+### dummy touch
 from distutils.core import setup
 import os,glob,sys
 assert sys.version_info >= (3,5),('Requires python>=3.5, found python==%s'%('.'.join([str(x) for x in sys.version_info[:3]])))
+
 config = dict(
 	name='singular_pipe_mock_flow',
 	version = '0.0.1',
