@@ -2,6 +2,7 @@
 Symbolic run construct .outward_edges, .input_json and .output_json as usual 
 but skip the creation of actual output files.
 A symbolic node is a node with all output_files being empty
+TESTSSS
 '''
 import singular_pipe
 from singular_pipe.types  import Node,Flow
