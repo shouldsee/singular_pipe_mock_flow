@@ -40,7 +40,7 @@ def workflow(self, prefix, seed =int , L=int,
 	_output = [
 	File('log'),
 	]):
-	assert 0,'REMOTE changed aaaaaa'
+# 	assert 0,'REMOTE changed aaaaaa'
 	print('\n[Flow running] mock=%s'%getattr(self.runner.func,'__name__','None'))
 	curr = self.runner(random_seq, prefix,  seed,  L)
 	curr1 = self.config_runner(tag='const')(random_seq, prefix, 0, 100)
