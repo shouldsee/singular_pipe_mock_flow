@@ -116,14 +116,14 @@ def run_and_backup(
 
 
 
-from singular_pipe.runner import cache_run, mock_run, get_changed_files, get_all_files
-from singular_pipe.shell import LoggedShellCommand
-from singular_pipe.types import File,CacheFile
-from pprint import pprint
-singular_pipe.rcParams['dir_layout']='clean'
 def main(self=None,
 	prefix = None):
 
+	from singular_pipe.runner import cache_run, mock_run, get_changed_files, get_all_files
+	from singular_pipe.shell import LoggedShellCommand
+	from singular_pipe.types import File,CacheFile
+	from pprint import pprint
+	singular_pipe.rcParams['dir_layout']='clean'
 	# if prefix is None:
 	prefix = Path('/tmp/singular_pipe.symbolic/root')
 	# backup_prefix = File('/home/user/.temp/backup_03_mock_flow/root')
