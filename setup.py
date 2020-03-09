@@ -18,9 +18,12 @@ config = dict(
 	'Programming Language :: Python :: 3.7',
 	],
 	install_requires=[
-		x.strip() for x in open("requirements.txt","r")
-        	if x.strip() and not x.strip().startswith("#")
+		'singular_pipe@https://github.com/shouldsee/python-singular-pipe/tree/master/singular_pipe',
 	],
+# 	install_requires=[
+# 		x.strip() for x in open("requirements.txt","r")
+#         	if x.strip() and not x.strip().startswith("#")
+# 	],
 
 )
 setup(**config)
