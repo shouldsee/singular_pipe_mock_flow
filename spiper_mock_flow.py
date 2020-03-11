@@ -4,7 +4,7 @@ but skip the creation of actual output files.
 A symbolic node is a node with all output_files being empty
 '''
 import spiper
-assert spiper.VERSION_INFO >= (0,0,4)
+assert spiper.version_info >= (0,0,4)
 from spiper.types  import Node,Flow
 from spiper.types  import Path, File, Prefix
 from spiper.types  import LoggedShellCommand
