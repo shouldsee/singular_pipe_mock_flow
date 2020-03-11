@@ -3,10 +3,10 @@ Symbolic run construct .outward_edges, .input_json and .output_json as usual
 but skip the creation of actual output files.
 A symbolic node is a node with all output_files being empty
 '''
-import singular_pipe
-from singular_pipe.types  import Node,Flow
-from singular_pipe.types  import Path, File, Prefix
-from singular_pipe.types  import LoggedShellCommand
+import spiper
+from spiper.types  import Node,Flow
+from spiper.types  import Path, File, Prefix
+from spiper.types  import LoggedShellCommand
 import random
 def random_seq(self, prefix, seed = int, L = int, _output=['seq']):
 	random.seed(seed)
@@ -52,7 +52,7 @@ def workflow(self, prefix, seed =int , L=int,
 
 
 
-from singular_pipe.types import Caller, DirtyKey, rgetattr
+from spiper.types import Caller, DirtyKey, rgetattr
 import shutil
 def copy_file(self, prefix, input=File, 
 	_single_file = 1, ### A single file node only tracks the file at self.prefix
@@ -82,8 +82,8 @@ def backup(self, prefix, flow = Caller, _output=[]):
 	return self
 
 
-# from singular_pipe.runner import get_all_files
-from singular_pipe.graph import tree_call, get_downstream_tree, get_upstream_tree, plot_simple_graph_lr
+# from spiper.runner import get_all_files
+from spiper.graph import tree_call, get_downstream_tree, get_upstream_tree, plot_simple_graph_lr
 from graphviz import Digraph
 import json
 def plot_graph(self, prefix, backup_result=Caller, _output=['deptree_json','deptree_dot_txt']):
@@ -120,13 +120,13 @@ def run_and_backup(
 def main(self=None,
 	prefix = None):
 
-	from singular_pipe.runner import cache_run, mock_run, get_changed_files, get_all_files
-	from singular_pipe.shell import LoggedShellCommand
-	from singular_pipe.types import File,CacheFile
+	from spiper.runner import cache_run, mock_run, get_changed_files, get_all_files
+	from spiper.shell import LoggedShellCommand
+	from spiper.types import File,CacheFile
 	from pprint import pprint
-	singular_pipe.rcParams['dir_layout']='clean'
+	spiper.rcParams['dir_layout']='clean'
 	# if prefix is None:
-	prefix = Path('/tmp/singular_pipe.symbolic/root')
+	prefix = Path('/tmp/spiper.symbolic/root')
 	# backup_prefix = File('/home/user/.temp/backup_03_mock_flow/root')
 	backup_prefix = File('~/.temp/backup_03_mock_flow/root').expand()
 	prefix.dirname().rmtree_p()
@@ -139,12 +139,12 @@ def main(self=None,
 	fs = get_changed_files(workflow, prefix, 1, 100, verbose=0)
 	pprint(fs)
 	assert fs ==[
- File('/tmp/singular_pipe.symbolic/root.workflow.log'),
- File('/tmp/singular_pipe.symbolic/root.random_seq.seq'),
- File('/tmp/singular_pipe.symbolic/root.random_seq_const.seq'),
- File('/tmp/singular_pipe.symbolic/root.transcribe.fasta'),
- File('/tmp/singular_pipe.symbolic/root.mutate.fasta'),
- File('/tmp/singular_pipe.symbolic/root.source.py'),
+ File('/tmp/spiper.symbolic/root.workflow.log'),
+ File('/tmp/spiper.symbolic/root.random_seq.seq'),
+ File('/tmp/spiper.symbolic/root.random_seq_const.seq'),
+ File('/tmp/spiper.symbolic/root.transcribe.fasta'),
+ File('/tmp/spiper.symbolic/root.mutate.fasta'),
+ File('/tmp/spiper.symbolic/root.source.py'),
 
  # File('/home/user/.temp/backup_03_mock_flow/root.source.py')
  ]
@@ -160,7 +160,7 @@ def main(self=None,
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.transcribe.output.fasta'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.mutate.output.fasta'),
  File('/home/user/.temp/backup_03_mock_flow/root.output.log'),
- # File('/tmp/singular_pipe.symbolic/root.source.py')
+ # File('/tmp/spiper.symbolic/root.source.py')
  File('/home/user/.temp/backup_03_mock_flow/root.source.py')
 ]
 
@@ -171,12 +171,12 @@ def main(self=None,
 	fs = get_changed_files (run_and_backup, prefix, 1, 100, backup_prefix, verbose=0)
 	pprint(fs)
 	assert fs == [
-	File('/tmp/singular_pipe.symbolic/root.workflow.log'),
- File('/tmp/singular_pipe.symbolic/root.random_seq.seq'),
- File('/tmp/singular_pipe.symbolic/root.random_seq_const.seq'),
- File('/tmp/singular_pipe.symbolic/root.transcribe.fasta'),
- File('/tmp/singular_pipe.symbolic/root.mutate.fasta'),
- File('/tmp/singular_pipe.symbolic/root.source.py'),
+	File('/tmp/spiper.symbolic/root.workflow.log'),
+ File('/tmp/spiper.symbolic/root.random_seq.seq'),
+ File('/tmp/spiper.symbolic/root.random_seq_const.seq'),
+ File('/tmp/spiper.symbolic/root.transcribe.fasta'),
+ File('/tmp/spiper.symbolic/root.mutate.fasta'),
+ File('/tmp/spiper.symbolic/root.source.py'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.random_seq.output.seq'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.random_seq_const.output.seq'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.transcribe.output.fasta'),
@@ -193,12 +193,12 @@ def main(self=None,
 	_  = cache_run         (run_and_backup,  prefix, 1, 100, backup_prefix, verbose=0)
 	fs = get_changed_files (run_and_backup,  prefix, 2, 200, backup_prefix, verbose=0)
 	pprint(fs)
-	assert fs == [File('/tmp/singular_pipe.symbolic/root.workflow.log'),
- File('/tmp/singular_pipe.symbolic/root.random_seq.seq'),
- # File('/tmp/singular_pipe.symbolic/root.random_seq_const.seq'),
- File('/tmp/singular_pipe.symbolic/root.transcribe.fasta'),
- File('/tmp/singular_pipe.symbolic/root.mutate.fasta'),
- # File('/tmp/singular_pipe.symbolic/root.source.py'),	
+	assert fs == [File('/tmp/spiper.symbolic/root.workflow.log'),
+ File('/tmp/spiper.symbolic/root.random_seq.seq'),
+ # File('/tmp/spiper.symbolic/root.random_seq_const.seq'),
+ File('/tmp/spiper.symbolic/root.transcribe.fasta'),
+ File('/tmp/spiper.symbolic/root.mutate.fasta'),
+ # File('/tmp/spiper.symbolic/root.source.py'),	
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.random_seq.output.seq'),
  # File('/home/user/.temp/backup_03_mock_flow/root.subflow.random_seq_const.output.seq'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.transcribe.output.fasta'),
@@ -212,12 +212,12 @@ def main(self=None,
 	fs = get_all_files     (run_and_backup,  prefix, 2, 200, backup_prefix, verbose=0)
 	pprint(fs)
 	assert fs == [
- File('/tmp/singular_pipe.symbolic/root.workflow.log'),
- File('/tmp/singular_pipe.symbolic/root.random_seq.seq'),
- File('/tmp/singular_pipe.symbolic/root.random_seq_const.seq'),
- File('/tmp/singular_pipe.symbolic/root.transcribe.fasta'),
- File('/tmp/singular_pipe.symbolic/root.mutate.fasta'),
- File('/tmp/singular_pipe.symbolic/root.source.py'),
+ File('/tmp/spiper.symbolic/root.workflow.log'),
+ File('/tmp/spiper.symbolic/root.random_seq.seq'),
+ File('/tmp/spiper.symbolic/root.random_seq_const.seq'),
+ File('/tmp/spiper.symbolic/root.transcribe.fasta'),
+ File('/tmp/spiper.symbolic/root.mutate.fasta'),
+ File('/tmp/spiper.symbolic/root.source.py'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.random_seq.output.seq'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.random_seq_const.output.seq'),
  File('/home/user/.temp/backup_03_mock_flow/root.subflow.transcribe.output.fasta'),

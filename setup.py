@@ -7,7 +7,7 @@ import os,glob,sys
 assert sys.version_info >= (3,5),('Requires python>=3.5, found python==%s'%('.'.join([str(x) for x in sys.version_info[:3]])))
 
 config = dict(
-	name='singular_pipe_mock_flow',
+	name='spiper_mock_flow',
 	version = '0.0.1',
   packages=['.'],
 	include_package_data=True,
@@ -20,7 +20,7 @@ config = dict(
 	'Programming Language :: Python :: 3.7',
 	],
 	install_requires=[
-		'singular_pipe@https://github.com/shouldsee/python-singular-pipe/tarball/master',
+		'spiper@https://github.com/shouldsee/python-singular-pipe/tarball/master',
 	],
 # 	install_requires=[
 # 		x.strip() for x in open("requirements.txt","r")
