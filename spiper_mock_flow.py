@@ -113,7 +113,7 @@ def run_and_backup(
 
 	#### plot a dependency graph into the backup directory
 	graph_out     = self.runner(plot_graph, backup_prefix, backup_result)
-
+	print('[workflow]done')
 	return self
 
 
