@@ -20,7 +20,7 @@ config = dict(
 	'Programming Language :: Python :: 3.7',
 	],
 	install_requires=[
-		'spiper@https://github.com/shouldsee/python-singular-pipe/tarball/master',
+		'spiper@https://github.com/shouldsee/python-singular-pipe/tarball/0.0.4',
 	],
 # 	install_requires=[
 # 		x.strip() for x in open("requirements.txt","r")
