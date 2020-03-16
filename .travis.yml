@@ -1,0 +1,25 @@
+language: python
+# services:
+  # - go
+  # - singularity
+python:
+  # - "2.7"
+  # - "3.4"
+  - "3.5"
+  - "3.7"
+  
+cache:
+  directories: 
+    - $HOME/.pip
+    - $HOME/.singularity
+    - /opt/singularity
+    # - $HOME/virtualenv ### too big
+
+before_install:
+  - echo pass
+script:
+  - pip install 'spiper@https://github.com/shouldsee/python-singular-pipe/tarball/0.0.6'
+  - python -V
+  - pip install .
+  - bash run.sh python
+
