@@ -4,7 +4,7 @@ but skip the creation of actual output files.
 A symbolic node is a node with all output_files being empty
 '''
 import spiper
-assert spiper.version_info >= (0,0,4)
+assert spiper.version_info >= (0,0,6)
 from spiper.types  import Node,Flow
 from spiper.types  import Path, File, Prefix
 from spiper.types  import LoggedShellCommand
@@ -66,10 +66,11 @@ def copy_file(self, prefix, input=File,
 	shutil.copy2(input, self.prefix+'.temp')
 	shutil.move(self.prefix +'.temp', self.prefix)
 
+from pprint import pprint
 from spiper.types import resolve_spiper
 @Flow
 def backup(self, prefix, flow = Caller, _output=[]):
-	key = 'subflow..random_seq..output..seq'
+	# key = 'subflow..random_seq..output..seq'
 	for key in [
 	'subflow..random_seq..output..seq',
 	'subflow..random_seq_const..output..seq',
@@ -77,20 +78,11 @@ def backup(self, prefix, flow = Caller, _output=[]):
 	'subflow..mutate..output..fasta',
 	'output..log',
 	]:
+		vv = resolve_spiper(flow,key)
+		# pprint(vv)
+		# assert 0
 		self.runner(copy_file, prefix+'.' + key, resolve_spiper(flow,key))
 	self.runner(copy_file, prefix+'.source.py',__file__)
-	# # rgetattr(flow,key))
-	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	# key = 'subflow..random_seq_const.output.seq'
-	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	# key = 'subflow.transcribe.output.fasta'
-	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	# key = 'subflow.mutate.output.fasta'
-	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	# key = 'output.log'
-	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-
-	# self.runner(copy_file, prefix+'.source.py',__file__)
 	return self
 
 
