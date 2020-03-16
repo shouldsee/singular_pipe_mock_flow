@@ -17,9 +17,9 @@ cache:
 
 before_install:
   - echo pass
-script:
   - pip install 'spiper@https://github.com/shouldsee/python-singular-pipe/tarball/0.0.6'
   - python -V
   - pip install .
+script:
   - bash run.sh python
 
