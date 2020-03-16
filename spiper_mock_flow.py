@@ -66,21 +66,33 @@ def copy_file(self, prefix, input=File,
 	shutil.copy2(input, self.prefix+'.temp')
 	shutil.move(self.prefix +'.temp', self.prefix)
 
+from spiper.types import resolve_spiper
 @Flow
 def backup(self, prefix, flow = Caller, _output=[]):
-	key = 'subflow.random_seq.output.seq'
-	self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	key = 'subflow.random_seq_const.output.seq'
-	self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	key = 'subflow.transcribe.output.fasta'
-	self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	key = 'subflow.mutate.output.fasta'
-	self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-	key = 'output.log'
-	self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
-
+	key = 'subflow..random_seq..output..seq'
+	for key in [
+	'subflow..random_seq..output..seq',
+	'subflow..random_seq_const..output..seq',
+	'subflow..transcribe..output..fasta',
+	'subflow..mutate..output..fasta',
+	'output..log',
+	]:
+		self.runner(copy_file, prefix+'.' + key, resolve_spiper(flow,key))
 	self.runner(copy_file, prefix+'.source.py',__file__)
+	# # rgetattr(flow,key))
+	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
+	# key = 'subflow..random_seq_const.output.seq'
+	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
+	# key = 'subflow.transcribe.output.fasta'
+	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
+	# key = 'subflow.mutate.output.fasta'
+	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
+	# key = 'output.log'
+	# self.runner(copy_file, prefix+'.' + key, rgetattr(flow,key))
+
+	# self.runner(copy_file, prefix+'.source.py',__file__)
 	return self
+
 
 
 # from spiper.runner import get_all_files
