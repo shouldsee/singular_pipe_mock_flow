@@ -16,7 +16,8 @@ cache:
     # - $HOME/virtualenv ### too big
 
 before_install:
-  - sudo apt-get update && apt-get install -y graphviz
+  - sudo apt-get update 
+  - sudo apt-get install -y graphviz
   - echo pass
   - pip install 'spiper@https://github.com/shouldsee/spiper/tarball/0.0.6'
   - python -V
