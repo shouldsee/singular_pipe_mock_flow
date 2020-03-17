@@ -43,11 +43,39 @@ def workflow(self, prefix, seed =int , L=int,
 	]):
 # 	assert 0,'REMOTE changed aaaaaa'
 	print('\n[Flow running] mock=%s'%getattr(self.runner.func,'__name__','None'))
-	curr = self.runner(random_seq, prefix,  seed,  L)
+	curr  = self.runner(random_seq, prefix,  seed,  L)
 	curr1 = self.config_runner(tag='const')(random_seq, prefix, 0, 100)
-	curr = self.runner(transcribe, prefix,  curr.output.seq,)
-	curr = self.runner(mutate,     prefix,  curr.output.fasta)
+	curr  = self.runner(transcribe, prefix,  curr.output.seq,)
+	curr  = self.runner(mutate,     prefix,  curr.output.fasta)
+	#### The Flow() execution will never be skipped
+	#### hence The self.output.log will always be changed
 	stdout = LoggedShellCommand(['ls -lhtr',prefix.dirname()], self.output.log).rstrip()
+	self.runner(copy_file, prefix+'.source.py', __file__)
+	return self
+
+
+
+@Flow
+def _workflow_future(self, prefix, seed =int , L=int, 
+	_output = [
+	File('log'),
+	]):
+# 	assert 0,'REMOTE changed aaaaaa'
+	print('\n[Flow running] mock=%s'%getattr(self.runner.func,'__name__','None'))
+	curr  = self.runner(random_seq, prefix,  seed,  L)
+	curr1 = self.config_runner(tag='const')(random_seq, prefix, 0, 100)
+	curr  = self.runner(transcribe, prefix,  curr.output.seq,)
+	curr  = self.runner(mutate,     prefix,  curr.output.fasta)
+	stdout = LoggedShellCommand(['ls -lhtr',prefix.dirname()], self.output.log).rstrip()
+
+	################################################
+	#### The Flow() execution will never be skipped
+	#### hence The self.output.log will always be changed 
+	#### The only way is to construct a node in place. 
+	def logged_file(self, output_file, input=Prefix, _single_file=1, _output=[]):
+		LoggedShellCommand(['ls -lhtr', input.dirname(), ], output_file)
+		return self
+	self.runner( logged_file, self.prefix_named+'.log', self.prefix )
 	self.runner(copy_file, prefix+'.source.py', __file__)
 	return self
 
