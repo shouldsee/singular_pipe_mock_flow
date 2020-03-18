@@ -101,7 +101,7 @@ def backup(self, prefix, flow = Caller, _output=[]):
 	# key = 'subflow..random_seq..output..seq'
 	for key in [
 	'subflow..random_seq..output..seq',
-	'subflow..random_seq_const..output..seq',
+	'subflow..random_seq-const..output..seq',
 	'subflow..transcribe..output..fasta',
 	'subflow..mutate..output..fasta',
 	'output..log',
