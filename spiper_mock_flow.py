@@ -2,9 +2,11 @@
 Symbolic run construct .outward_edges, .input_json and .output_json as usual 
 but skip the creation of actual output files.
 A symbolic node is a node with all output_files being empty
+
+This workflow emphasis using types.Caller as inputs to Flow.
 '''
 import spiper
-assert spiper.version_info >= (0,0,6)
+assert spiper.version_info >= (0,1,1)
 from spiper.types  import Node,Flow
 from spiper.types  import Path, File, Prefix
 from spiper.types  import LoggedShellCommand
@@ -132,7 +134,7 @@ def plot_graph(self, prefix, backup_result=Caller, _output=['deptree_json','dept
 def run_and_backup(
 	self, prefix,
 	seed = int , L = int, 
-	backup_prefix=File, ### we don't want to track backup_prefix
+	backup_prefix= str, ### we don't want to track backup_prefix
 	_output = [
 	# File('log'),
 	]):
